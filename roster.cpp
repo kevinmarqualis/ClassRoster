@@ -20,35 +20,128 @@ void Roster::parse(string studentData)
 	// Parse age and convert to int
 	previousComma = nextComma + 1;
 	nextComma = studentData.find(",", previousComma);
-	int age = std::stoi(studentData.substr(previousComma, nextComma - previousComma));
+	int age = stoi(studentData.substr(previousComma, nextComma - previousComma));
 	// Parse DaysInCourse1
 	previousComma = nextComma + 1;
 	nextComma = studentData.find(",", previousComma);
-	int daysToCompleteCourse1 = std::stoi(studentData.substr(previousComma, nextComma - previousComma));
+	int daysToCompleteCourse1 = stoi(studentData.substr(previousComma, nextComma - previousComma));
 	// Parse DaysInCourse2
 	previousComma = nextComma + 1;
 	nextComma = studentData.find(",", previousComma);
-	int daysToCompleteCourse2 = std::stoi(studentData.substr(previousComma, nextComma - previousComma));
+	int daysToCompleteCourse2 = stoi(studentData.substr(previousComma, nextComma - previousComma));
 	// Parse DaysInCourse3
 	previousComma = nextComma + 1;
 	nextComma = studentData.find(",", previousComma);
-	int daysToCompleteCourse3 = std::stoi(studentData.substr(previousComma, nextComma - previousComma));
+	int daysToCompleteCourse3 = stoi(studentData.substr(previousComma, nextComma - previousComma));
 	// Parse Degree Program
 	previousComma = nextComma + 1;
+	DegreeProgram degreeProgram;
 	string program = studentData.substr(previousComma);
+
 	if (program.compare(degreePrograms[0]) == 0)
 	{
-		DegreeProgram degreeProgram = SECURITY;
+		degreeProgram = SECURITY;
 	}
 	else if (program.compare(degreePrograms[1]) == 0)
 	{
-		DegreeProgram degreeProgram = NETWORK;
+		degreeProgram = NETWORK;
 	}
 	else
 	{
-		DegreeProgram degreeProgram = SOFTWARE;
+		degreeProgram = SOFTWARE;
 	}
 	
-	add()
-
+	// add student to roster
+	add(studentId, firstName, lastName, emailAddress, age, daysToCompleteCourse1, daysToCompleteCourse2, daysToCompleteCourse3, degreeProgram);
 }
+
+void Roster::add(string studentId, string firstName, string lastName, string emailAddress, int age, int daysToCompleteCourse1, int daysToCompleteCourse2, int daysToCompleteCourse3, DegreeProgram degreeProgram)
+{
+	int daysInCourse[3] = { daysToCompleteCourse1, daysToCompleteCourse2, daysToCompleteCourse3 };
+
+	classRosterArray[++index] = new Student(studentId, firstName, lastName, emailAddress, age, daysInCourse, degreeProgram);
+}
+
+void Roster::remove(string studentId)
+{
+	bool remove = false;
+	for (int i = 0; i <= Roster::index; i++)
+	{
+		if (classRosterArray[i]->getStudentId() == studentId)
+		{
+			remove = true;
+			if (i < classSize - 1)
+			{
+				Student* temp = classRosterArray[i];
+				classRosterArray[i] = classRosterArray[classSize - 1];
+				classRosterArray[classSize - 1] = temp;
+			}
+			Roster::index--;
+		}
+	}
+	if (!remove)
+	{
+		cout << "Student " << studentId << " not found" << endl;
+	}
+}
+
+void Roster::printAll()
+{
+	for (int i = 0; i <= Roster::index; i++)
+	{
+		classRosterArray[i]->print();
+	}
+}
+
+void Roster::printByDegreeProgram(DegreeProgram degreeProgram)
+{
+	for (int i = 0; i <= Roster::index; i++)
+	{
+		if (classRosterArray[i]->getDegreeProgram() == degreeProgram)
+		{
+			classRosterArray[i]->print();
+		}
+	}
+}
+
+void Roster::printAverageDaysInCourse(string studentId)
+{
+	for (int i = 0; i <= Roster::index; i++)
+	{
+		if (classRosterArray[i]->getStudentId() == studentId)
+		{
+			cout << classRosterArray[i]->getStudentId() << ": ";
+			cout << (classRosterArray[i]->getDaysToCompleteCourse()[0] + classRosterArray[i]->getDaysToCompleteCourse()[1] + classRosterArray[i]->getDaysToCompleteCourse()[2]) / 3.0 << endl;
+		}
+	}
+}
+
+// include at('@') and period('.'); not include a space(' ')
+void Roster::printInvalidEmails()
+{
+	bool invalid = false;
+	for (int i = 0; i <= Roster::index; i++)
+	{
+		string email = (classRosterArray[i]->getEmail());
+		if (email.find('@') == string::npos || email.find('.') == string::npos || email.find(' ') != string::npos)
+		{
+			invalid = true;
+			cout << "Invalid email found: " << email << endl;
+		}
+	}
+
+	if (!invalid)
+	{
+		cout << "No Invalid Emails Found";
+	}
+}
+
+Roster::~Roster()
+{
+	for (int i = 0; i < classSize; i++)
+	{
+		delete classRosterArray[i];
+		classRosterArray[i] = nullptr;
+	}
+}
+

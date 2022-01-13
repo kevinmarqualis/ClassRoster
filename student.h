@@ -27,7 +27,7 @@ public:
 	string getLastName();
 	string getEmail();
 	int getAge();
-	int * getDaysToCompleteCourse();
+	int* getDaysToCompleteCourse();
 	DegreeProgram getDegreeProgram();
 
 	// Setters
