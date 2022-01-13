@@ -56,13 +56,14 @@ void Student::setDegreeProgram(DegreeProgram program) { this->degreeProgram = pr
 
 void Student::print()
 {
-	std::cout << "Student's Information" << endl;
-	std::cout << "Student ID: " << this->getStudentId() << endl;
-	std::cout << "Name: " << this->getFirstName() << " " << this->getLastName() << endl;
-	std::cout << "Email: " << this->getEmail() << endl;
-	std::cout << "Age: " << this->getAge() << endl;
-	std::cout << "Days to complete courses: " << this->getDaysToCompleteCourse()[0] << ", ";
+	std::cout << "Student Information" << '\t';
+	std::cout << "Student ID: " << this->getStudentId() << '\t';
+	std::cout << "First Name: " << this->getFirstName() << '\t';
+	std::cout << "Last Name: " << this->getLastName() << '\t';
+	/*std::cout << "Email: " << this->getEmail() << endl;*/
+	std::cout << "Age: " << this->getAge() << '\t';
+	std::cout << "daysInCourse: {" << this->getDaysToCompleteCourse()[0] << ", ";
 	std::cout << this->getDaysToCompleteCourse()[1] << ", ";
-	std::cout << this->getDaysToCompleteCourse()[2] << endl;
-	std::cout << degreePrograms[this->getDegreeProgram()] << endl;
+	std::cout << this->getDaysToCompleteCourse()[2] << '}' << '\t';
+	std::cout << "Degree Program: " << degreePrograms[this->getDegreeProgram()] << endl;
 }

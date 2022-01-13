@@ -3,7 +3,7 @@
 
 using namespace std;
 
-enum DegreeProgram {Security, Network, Software};
+enum DegreeProgram { SECURITY, NETWORK, SOFTWARE };
 
 // Map each degree program to a string representation
-static const string degreePrograms[] = { "SECURITY", "FICTION", "NONFICTION" };
+static const string degreePrograms[] = { "SECURITY", "NETWORK", "SOFTWARE" };
